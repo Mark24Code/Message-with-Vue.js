@@ -1,0 +1,25 @@
+{
+  "name": "message",
+  "version": "1.0.0",
+  "description": "消息系统",
+  "main": "package.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot --inline"
+  },
+  "keywords": [
+    "消息系统",
+    "vue"
+  ],
+  "author": "xiaoningning",
+  "license": "ISC",
+  "devDependencies": {
+    "file-loader": "^0.8.5",
+    "jquery": "^2.1.4",
+    "moment": "^2.10.6",
+    "url-loader": "^0.5.7"
+  }
+}

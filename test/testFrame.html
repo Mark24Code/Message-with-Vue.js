@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8" />
+    <title>不同的浏览器帧中的instanceof值是否一样</title>
+</head>
+<body>
+<div></div>
+<iframe src="frameA.html" frameborder="0" width="400" height="400" name="frameA" id="frameA"></iframe>
+<script>
+    window.onload = function(){
+        function Person(){
+            this.name = "12121";
+        }
+        var person = new Person();
+        var PersonB = window.frames["frameA"].Person;
+        console.log(person instanceof Person);
+        console.log(person instanceof PersonB);
+    }
+
+    function isArray(value){
+        if(typeof Array.isArray == "function"){
+            return Array.isArray(value);
+        }else{
+            typeof value.prototype.toString.call(value) === "[object Array]";
+        }
+    }
+
+    function isAttr(name, object){
+        // 拥有这个函数
+        if("hasOwnProperty" in object && object.hasOwnProperty(name)){
+            return true;
+        }else if(name in object){
+            return true;
+        }
+
+        return false;
+    }
+
+    function getDivs(element){
+        if(element && element.getElementsByTagName){
+            return element.getElementsByTagName("div");
+        }else{
+            throw new Error("getDivs: argument must be a DOM element.");
+        }
+    }
+    var body = document.getElementsByTagName("body")[0];
+    getDivs(null);
+
+    //
+    function MyError(message){
+        this.message = message;
+    }
+    MyError.prototype = new Error();
+
+    function fun(){
+        try{
+            // 处理某些操作
+        }catch(ex){
+            if(ex instanceof MyError){
+                // 处理一些操作
+            }else{
+                // 其他操作
+            }
+        }
+    }
+
+    function DOMWrapper(element){
+        this.element = element;
+    }
+    DOMWrapper.prototype.addClass = function(className){
+        this.element.className += this.element.className + " "+className;
+    }
+
+    DOMWrapper.prototype.remove = function(){
+        this.element.parentNode.removeChild(this.element);
+    }
+
+    var domWrapper = new DOMWrapper(document.getElementById("#div"));
+    domWrapper.addClass("hide");
+    domWrapper.remove();
+
+    function myGetElementById(id){
+        if(document.getElementById){ //DOM
+            return document.getElementById(id);
+        }else if(document.all){ //IE
+            return document.all[id];
+        }else if(document.layers){ // Netscape<=4
+            return document.layers[id];
+        }
+    }
+
+    function setAnimation(callback){
+        if(window.requestAnimationFrame){ // 标准
+            return window.requestAnimationFrame(callback);
+        }else if(window.mozRequestAnimationFrame){ // firefox
+            return window.mozRequestAnimationFrame(callback);
+        }else if(window.webkitRequestAnimationFrame){
+            return window.webkitRequestAnimationFrame(callback);
+        }else if(window.oRequestAnimationFrame){
+            return window.oRequestAnimationFrame(callback);
+        }else if(window.msRequestAnimationFrame){
+            return window.msRequestAnimationFrame(callback);
+        }else{
+            return setTimeout(callback, 0);
+        }
+    }
+</script>
+</body>
+</html>
